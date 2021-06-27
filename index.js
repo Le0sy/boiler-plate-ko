@@ -24,7 +24,7 @@ app.get('/', (req, res) => res.send('Hello World! 테스트 입니다.'))
 app.post('/register', (req, res) => {
     // 회원 가입 시 필요한 정보를 Client에서 가져오면,
     // 해당 정보를 DB에 넣어줌.
-    const  user = new User(req.body)
+    const user = new User(req.body)
 
     //save method는 mongoDB에서 제공
     user.save((err, userInfo) => {
