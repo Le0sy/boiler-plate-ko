@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const saltRounds = 10
+const secretToken = require('../config/token.js')
 //salt 수. 10자리 salt 사용
+
+const jwt = require('jsonwebtoken');
 
 const userSchema = mongoose.Schema({
     name: {
@@ -48,8 +51,32 @@ userSchema.pre('save', function( next ) {
                 next()
             })
         })
+    } else {
+        next()
+        // 비밀번호 변경이 아닌 경우 바로 save 함수로
     }
 })
+                   //index.js 에서 사용할 method명
+userSchema.methods.comparePassword = function(plainPassword, cb) {
+    // plain Password
+    bcrypt.compare(plainPassword, this.password, function(err, isMatch) {
+        if(err) return cb(err);
+        cb(null, isMatch);
+    })
+}
+
+userSchema.methods.generateToken = function(cb) {
+    var user = this;
+
+    // jswonwebtoken을 이용하여 token 생성
+    var token = jwt.sign(user._id.toHexString(), secretToken.token)
+    user.token = token
+    user.save(function(err, user) {
+        if(err) return cb(err)
+        else cb(null, user)
+    })
+}
+
 
 const User = mongoose.model('User', userSchema)
 module.exports = { User }
