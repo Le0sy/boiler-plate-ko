@@ -82,9 +82,9 @@ app.get('/api/users/auth', auth , (req, res) => {
     })
 })
 
-app.get('/api/hello', (req, res) => {
-    res.send("hello? - test");
-})
+//app.get('/api/hello', (req, res) => {
+//    res.send("hello? - test");
+//})
 
 app.get('/api/users/logout', auth, (req, res) => {
     User.findOneAndUpdate({ _id: req.user._id },
