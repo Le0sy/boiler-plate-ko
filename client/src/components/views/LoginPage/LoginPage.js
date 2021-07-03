@@ -19,6 +19,7 @@ function LoginPage(props) {
 
     const onSubmitHandler = (event) => {
         event.preventDefault();
+        // 페이지가 새로고침되지 않게 해줌
 
         let body = {
             email: Email,
